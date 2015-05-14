@@ -101,6 +101,7 @@
         ;
         this._icon
             .target(domNode)
+            .pos({x: width/2 - 20, y: -height/2 + 20})
             .render()
         ;
         this._menu
