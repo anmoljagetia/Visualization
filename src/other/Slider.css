@@ -33,3 +33,7 @@
     stroke-width: 1.00px;
     pointer-events: none;
 }
+
+.common_Widget .common_Icon:hover {
+    cursor:pointer;
+}

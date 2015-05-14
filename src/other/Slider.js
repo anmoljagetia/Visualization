@@ -123,6 +123,9 @@
 
         this._icon
             .target(domNode)
+            .pos({x: this.width()/2 - 75, y: -this.height()/2 + 30})
+            .display(false)
+            .render()
         ;
     };
 
@@ -133,12 +136,13 @@
        
         if (this.showPlay()) {
             this._icon
-                .pos({x: width/2 - 20, y: -height/2 + 20})
+                .display(true)
                 .render()
             ; 
         } else {
             this._icon
-                .move({ x: 500, y: 200})
+                .display(false)
+                // .move({ x: 500, y: 200})
                 .render()
             ;
         }
@@ -153,7 +157,6 @@
 
               d
                   .faChar("\uf04b")
-                  .padding_percent(50)
                   .render()
               ;
 
@@ -164,7 +167,6 @@
 
               d
                   .faChar("\uf04c")
-                  .padding_percent(50)
                   .render()
               ;
             }
