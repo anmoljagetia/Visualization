@@ -10,12 +10,8 @@
         SVGWidget.call(this);
         ISlider.call(this);
 
-        this._icon = new Icon()
-            .faChar("\uf07b")
-            .padding_percent(50)
-        ;
-
         this.selectionLabel("");
+
 
         this.xScale = d3.scale.linear()
             .clamp(true)
@@ -92,6 +88,8 @@
             this.axis.tickValues(d3.merge([d3.range(this.low(), this.high(), this.step()), [this.high()]]));
         }
 
+        this._playing = false;
+
         this.axisElement = element.append("g")
             .attr("class", "x axis")
         ;
@@ -122,6 +120,10 @@
             .attr("class", "handle")
             .attr("transform", "translate(0,-27)")
         ;
+
+        this._icon
+            .target(domNode)
+        ;
     };
 
     Slider.prototype.update = function (domNode, element) {
@@ -131,13 +133,11 @@
        
         if (this.showPlay()) {
             this._icon
-                .target(domNode)
                 .pos({x: width/2 - 20, y: -height/2 + 20})
                 .render()
             ; 
         } else {
             this._icon
-                .target(domNode)
                 .move({ x: 500, y: 200})
                 .render()
             ;
@@ -146,6 +146,28 @@
         this._icon.element() 
         .on("click", function (d) { 
             d3.event.stopPropagation(); 
+            if (this._playing) {
+              // this.stopPlaying();
+              console.log(this._playing + "Stop");
+              this._playing = false;
+
+              d
+                  .faChar("\uf04b")
+                  .padding_percent(50)
+                  .render()
+              ;
+
+            } else {
+              // this.startPlaying();
+              console.log(this._playing + "Start");
+              this._playing = true;
+
+              d
+                  .faChar("\uf04c")
+                  .padding_percent(50)
+                  .render()
+              ;
+            }
         }) 
 
         this.xScale
