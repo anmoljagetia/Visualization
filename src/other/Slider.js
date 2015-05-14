@@ -55,6 +55,7 @@
     Slider.prototype.publish("low", 0, "number", "Low");
     Slider.prototype.publish("high", 100, "number", "High");
     Slider.prototype.publish("step", 10, "number", "Step");
+    Slider.prototype.publish("playInterval", 1000, "number", "Play Interval");
     Slider.prototype.publish("selectionLabel", "", "string", "Selection Label");
 
     Slider.prototype.testData = function (_) {
@@ -70,6 +71,40 @@
         return this;
     };
 
+    Slider.prototype.play = function () {
+        var context = this;
+        var tick = this.low(); 
+        var intervalHandler = setInterval(function () { 
+            context 
+                .data(tick) 
+                .render() 
+            ; 
+            tick += context.step(); 
+            if (tick > context.high()) { 
+                clearInterval(intervalHandler); 
+                context.stop();
+            } 
+        }, context.playInterval());
+        // }, this.playInterval()); ---> This doesn't work even though we have context = this ?
+        // alert(this.playInterval());
+        // }, 1000);
+        
+    };
+
+    Slider.prototype.pause = function () {
+        // Will be added later
+    };
+
+    Slider.prototype.stop = function () {
+        var context = this;
+        alert("stopped");
+        this._icon
+            .faChar("\uf04b")
+            .render()
+        ;
+        this.data(this.low());
+        clearInterval(this._intervalHandler);
+    };
 
     Slider.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
@@ -151,26 +186,23 @@
         .on("click", function (d) { 
             d3.event.stopPropagation(); 
             if (this._playing) {
-              // this.stopPlaying();
-              console.log(this._playing + "Stop");
-              this._playing = false;
-
-              d
-                  .faChar("\uf04b")
-                  .render()
-              ;
-
+                context.stop(context.play());
+                console.log(this._playing + "from Stop");
+                this._playing = false;
+                d
+                    .faChar("\uf04b")
+                    .render()
+                ;
             } else {
-              // this.startPlaying();
-              console.log(this._playing + "Start");
-              this._playing = true;
-
-              d
-                  .faChar("\uf04c")
-                  .render()
-              ;
+                console.log(this._playing + "from Start");
+                this._playing = true;
+                context.play();
+                d
+                    .faChar("\uf04c")
+                    .render()
+                ;
             }
-        }) 
+        }); 
 
         this.xScale
             .domain([this.low(), this.high()])
