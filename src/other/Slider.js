@@ -1,14 +1,19 @@
 "use strict";
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
-        define(["d3", "../common/SVGWidget", "./ISlider", "css!./Slider"], factory);
+        define(["d3", "../common/SVGWidget", "./ISlider", "../common/Icon", "css!./Slider"], factory);
     } else {
-        root.other_Slider = factory(root.d3, root.common_SVGWidget, root.other_ISlider);
+        root.other_Slider = factory(root.d3, root.common_SVGWidget, root.other_ISlider, root.common_Icon);
     }
-}(this, function (d3, SVGWidget, ISlider) {
+}(this, function (d3, SVGWidget, ISlider, Icon) {
     function Slider() {
         SVGWidget.call(this);
         ISlider.call(this);
+
+        this._icon = new Icon()
+            .faChar("\uf07b")
+            .padding_percent(50)
+        ;
 
         this.selectionLabel("");
 
@@ -16,6 +21,12 @@
             .clamp(true)
         ;
         var context = this;
+        
+        this._icon = new Icon()
+            .faChar("\uf04b")
+            .padding_percent(50)
+        ;
+
         this.brush = d3.svg.brush()
             .x(this.xScale)
             .extent([0, 0])
@@ -43,11 +54,12 @@
     Slider.prototype.publish("fontFamily", null, "string", "Font Name",null,{tags:['Basic']});
     Slider.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:['Basic']});
 
-    Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection",null,{tags:['Intermediate']});
-    Slider.prototype.publish("low", 0, "number", "Low",null,{tags:['Intermediate']});
-    Slider.prototype.publish("high", 100, "number", "High",null,{tags:['Intermediate']});
-    Slider.prototype.publish("step", 10, "number", "Step",null,{tags:['Intermediate']});
-    Slider.prototype.publish("selectionLabel", "", "string", "Selection Label",null,{tags:['Intermediate']});
+    Slider.prototype.publish("showPlay", false, "boolean", "Show Play Button");
+    Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection");
+    Slider.prototype.publish("low", 0, "number", "Low");
+    Slider.prototype.publish("high", 100, "number", "High");
+    Slider.prototype.publish("step", 10, "number", "Step");
+    Slider.prototype.publish("selectionLabel", "", "string", "Selection Label");
 
     Slider.prototype.testData = function (_) {
         this.columns("Percent");
@@ -61,6 +73,7 @@
         this.data([44, 66]);
         return this;
     };
+
 
     Slider.prototype.data = function (_) {
         var retVal = SVGWidget.prototype.data.apply(this, arguments);
@@ -114,6 +127,26 @@
     Slider.prototype.update = function (domNode, element) {
         var context = this;
         var width = this.width() - 50;  //TODO - 50 should be "padding"
+        var height = this.height() - 20;  //TODO - 20 should be "padding"
+       
+        if (this.showPlay()) {
+            this._icon
+                .target(domNode)
+                .pos({x: width/2 - 20, y: -height/2 + 20})
+                .render()
+            ; 
+        } else {
+            this._icon
+                .target(domNode)
+                .move({ x: 500, y: 200})
+                .render()
+            ;
+        }
+
+        this._icon.element() 
+        .on("click", function (d) { 
+            d3.event.stopPropagation(); 
+        }) 
 
         this.xScale
             .domain([this.low(), this.high()])
