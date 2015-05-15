@@ -79,13 +79,17 @@
             context 
                 .data(tick) 
                 .render() 
-            ; 
+            ;
             tick += context.step();
             if (tick > context.high()) {
                 clearInterval(intervalHandler);
             }
+
+            if (context._playing === false) {
+                clearInterval(intervalHandler);
+                context.data(context.low());
+            }
         }, context.playInterval());
-        alert(intervalHandler);
         // }, 1000);
     };
 
@@ -99,9 +103,6 @@
             .faChar("\uf04b")
             .render()
         ;
-        this.data(this.low());
-        // this.play();
-        clearInterval(this.intervalHandler);
     };
 
     Slider.prototype.data = function (_) {
@@ -184,16 +185,16 @@
         .on("click", function (d) { 
             d3.event.stopPropagation(); 
             if (context._playing) {
+                context._playing = false;
                 context.stop();
                 console.log(context._playing + "from Stop");
-                context._playing = false;
                 d
                     .faChar("\uf04b")
                     .render()
                 ;
             } else {
-                console.log(context._playing + "from Start");
                 context._playing = true;
+                console.log(context._playing + "from Start");
                 context.play();
                 d
                     .faChar("\uf04c")
