@@ -74,21 +74,19 @@
     Slider.prototype.play = function () {
         var context = this;
         var tick = this.low(); 
+
         var intervalHandler = setInterval(function () { 
             context 
                 .data(tick) 
                 .render() 
             ; 
-            tick += context.step(); 
-            if (tick > context.high()) { 
-                clearInterval(intervalHandler); 
-                context.stop();
-            } 
+            tick += context.step();
+            if (tick > context.high()) {
+                clearInterval(intervalHandler);
+            }
         }, context.playInterval());
-        // }, this.playInterval()); ---> This doesn't work even though we have context = this ?
-        // alert(this.playInterval());
+        alert(intervalHandler);
         // }, 1000);
-        
     };
 
     Slider.prototype.pause = function () {
@@ -96,14 +94,14 @@
     };
 
     Slider.prototype.stop = function () {
-        var context = this;
-        alert("stopped");
+        console.log("stopped");
         this._icon
             .faChar("\uf04b")
             .render()
         ;
         this.data(this.low());
-        clearInterval(this._intervalHandler);
+        // this.play();
+        clearInterval(this.intervalHandler);
     };
 
     Slider.prototype.data = function (_) {
@@ -185,17 +183,17 @@
         this._icon.element() 
         .on("click", function (d) { 
             d3.event.stopPropagation(); 
-            if (this._playing) {
-                context.stop(context.play());
-                console.log(this._playing + "from Stop");
-                this._playing = false;
+            if (context._playing) {
+                context.stop();
+                console.log(context._playing + "from Stop");
+                context._playing = false;
                 d
                     .faChar("\uf04b")
                     .render()
                 ;
             } else {
-                console.log(this._playing + "from Start");
-                this._playing = true;
+                console.log(context._playing + "from Start");
+                context._playing = true;
                 context.play();
                 d
                     .faChar("\uf04c")
