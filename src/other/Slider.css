@@ -34,6 +34,27 @@
     pointer-events: none;
 }
 
-.common_Widget .common_Icon:hover {
+.common_Icon:hover {
     cursor:pointer;
 }
+
+.common_Icon .common_Widget .common_Shape {
+    fill: #ccc;
+    stroke: #bbb;
+    z-index: 10;
+}
+
+.common_Icon:hover .common_Shape:hover {
+    stroke: #aaa;
+}
+
+.common_Icon .common_FAChar .common_Text {
+  fill: white;
+  stroke: #bbb;
+}
+
+.common_Icon:hover .common_FAChar:hover .common_Text:hover {
+  stroke: #aaa;
+}
+
+
