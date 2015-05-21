@@ -52,12 +52,12 @@
     Slider.prototype.publish("fontColor", null, "html-color", "Font Color",null,{tags:['Basic']});
 
     Slider.prototype.publish("showPlay", false, "boolean", "Show Play Button");
-    Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection");
-    Slider.prototype.publish("low", 0, "number", "Low");
-    Slider.prototype.publish("high", 100, "number", "High");
-    Slider.prototype.publish("step", 10, "number", "Step");
+    Slider.prototype.publish("allowRange", false, "boolean", "Allow Range Selection",null,{tags:['Intermediate']});
+    Slider.prototype.publish("low", 0, "number", "Low",null,{tags:['Intermediate']});
+    Slider.prototype.publish("high", 100, "number", "High",null,{tags:['Intermediate']});
+    Slider.prototype.publish("step", 10, "number", "Step",null,{tags:['Intermediate']});
     Slider.prototype.publish("playInterval", 1000, "number", "Play Interval");
-    Slider.prototype.publish("selectionLabel", "", "string", "Selection Label");
+    Slider.prototype.publish("selectionLabel", "", "string", "Selection Label",null,{tags:['Intermediate']});
     Slider.prototype.publishProxy("diameter", "_icon", "diameter");
     Slider.prototype.publish("gap", 50, "number", "gap");
 
