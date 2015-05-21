@@ -20,9 +20,15 @@
         
         this._icon = new Icon()
             .faChar("\uf04b")
-            // .padding_percent(50)
             .scale(1.5)
         ;
+
+        this._icon1 = new Icon()
+            .faChar("\uf01e")
+            .scale(1)
+        ;
+
+
 
         this.brush = d3.svg.brush()
             .x(this.xScale)
@@ -58,8 +64,8 @@
     Slider.prototype.publish("step", 10, "number", "Step",null,{tags:['Intermediate']});
     Slider.prototype.publish("playInterval", 1000, "number", "Play Interval");
     Slider.prototype.publish("selectionLabel", "", "string", "Selection Label",null,{tags:['Intermediate']});
-    Slider.prototype.publishProxy("diameter", "_icon", "diameter");
-    Slider.prototype.publish("gap", 50, "number", "gap");
+    Slider.prototype.publishProxy("playDiameter", "_icon", "diameter");
+    Slider.prototype.publish("playGutter", 40, "number", "playGutter");
 
     Slider.prototype.testData = function (_) {
         this.columns("Percent");
@@ -85,10 +91,20 @@
             ;
             tick += context.step();
             if (tick > context.high()) {
-                clearInterval(context.intervalHandler);
+                if (context._loop === true) {
+                    context.data(context.low());
+                    tick = context.low();
+                } else {
+                    context._icon
+                        .faChar("\uf04b")
+                        .render()
+                    ;
+                    context._playing = false;
+                    
+                    clearInterval(context.intervalHandler);
+                }
             }
         }, context.playInterval());
-        // }, 1000);
     };
 
     Slider.prototype.pause = function () {
@@ -101,7 +117,6 @@
             .faChar("\uf04b")
             .render()
         ;
- 
         clearInterval(this.intervalHandler);
         this.data(this.low());
     };
@@ -124,6 +139,7 @@
         }
 
         this._playing = false;
+        this._loop = false;
 
         this.axisElement = element.append("g")
             .attr("class", "x axis")
@@ -158,7 +174,14 @@
 
         this._icon
             .target(domNode)
-            .pos({x: this.width()/2 - 50, y: 0})
+            .pos({x: this.width()/2 - 80, y: 0})
+            .display(false)
+            .render()
+        ;        
+
+        this._icon1
+            .target(domNode)
+            .pos({x: this.width()/2 - 40, y: 0})
             .display(false)
             .render()
         ;
@@ -180,14 +203,25 @@
                 .display(true)
                 .render()
             ;
+
+            this._icon1
+                .display(true)
+                .render()
+            ;
+
             this.xScale
                 .domain([this.low(), this.high()])
-                .range([-width/2, width/2 - this._icon.diameter() - this.gap()])
+                .range([-width/2, width/2 - this._icon.diameter()*2 - this.playGutter()])
             ;
             this.data(this._data);
 
         } else {
             this._icon
+                .display(false)
+                .render()
+            ;
+
+            this._icon1
                 .display(false)
                 .render()
             ;
@@ -212,9 +246,20 @@
             }
         };
 
+        this._icon1.click = function(d) {
+            if (context._loop == false) {
+                context._loop = true;
+                console.log ("Loop enabled");
+            } else {
+                context._loop = false;
+                console.log ("Loop disabled");
+            }
+        };
+
         this.axisElement
             .call(this.axis)
         ;
+
         this.axisElement.selectAll('.tick > text')
                 .style('fill',this.fontColor())
                 .style('font-size',this.fontSize())
