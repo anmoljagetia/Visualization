@@ -20,7 +20,7 @@
         
         this._icon = new Icon()
             .faChar("\uf04b")
-            .padding_percent(50)
+            // .padding_percent(50)
             .scale(1.5)
         ;
 
@@ -193,27 +193,24 @@
             ;
         }
 
-        this._icon.element() 
-        .on("click", function (d) { 
+        this._icon.click = function(d) {
             d3.event.stopPropagation(); 
             if (context._playing) {
                 context._playing = false;
                 context.stop();
-                console.log(context._playing + "from Stop");
                 d
                     .faChar("\uf04b")
                     .render()
                 ;
             } else {
                 context._playing = true;
-                console.log(context._playing + "from Start");
                 context.play();
                 d
                     .faChar("\uf04c")
                     .render()
                 ;
             }
-        }); 
+        };
 
         this.axisElement
             .call(this.axis)
