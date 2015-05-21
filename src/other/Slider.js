@@ -170,7 +170,7 @@
         var height = this.height() - 20;  //TODO - 20 should be "padding"
 
         this.xScale
-            .domain([this.allowRange(), this.high()])
+            .domain([this.low(), this.high()])
             .range([-width/2, width/2])
         ;
          this.data(this._data);
@@ -181,7 +181,7 @@
                 .render()
             ;
             this.xScale
-                .domain([this.allowRange(), this.high()])
+                .domain([this.low(), this.high()])
                 .range([-width/2, width/2 - this._icon.diameter() - this.gap()])
             ;
             this.data(this._data);
@@ -194,7 +194,7 @@
         }
 
         this._icon.click = function(d) {
-            d3.event.stopPropagation(); 
+            d3.event.stopPropagation();
             if (context._playing) {
                 context._playing = false;
                 context.stop();
