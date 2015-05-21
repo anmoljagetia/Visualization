@@ -64,6 +64,7 @@
             .render()
         ;
         this._tooltipElement.text(this.tooltip());
+        element.on("click", this.click);
     };
 
     return Icon;
