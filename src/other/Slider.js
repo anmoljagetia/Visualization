@@ -12,10 +12,10 @@
 
         this.selectionLabel("");
 
-
         this.xScale = d3.scale.linear()
             .clamp(true)
         ;
+        
         var context = this;
         
         this._icon = new Icon()
@@ -27,8 +27,6 @@
             .faChar("\uf01e")
             .scale(1)
         ;
-
-        var context = this;
 
         this._icon.click = function(d) {
             d3.event.stopPropagation();
@@ -219,7 +217,7 @@
     Slider.prototype.update = function (domNode, element) {
         var context = this;
         var width = this.width() - 100;  //TODO - 50 should be "padding"
-        var height = this.height() - 20;  //TODO - 20 should be "padding"
+        // var height = this.height() - 20;  //TODO - 20 should be "padding"
 
         this.xScale
             .domain([this.low(), this.high()])
