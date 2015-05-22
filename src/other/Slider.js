@@ -28,7 +28,36 @@
             .scale(1)
         ;
 
+        var context = this;
 
+        this._icon.click = function(d) {
+            d3.event.stopPropagation();
+            if (context._playing) {
+                context._playing = false;
+                context.stop();
+                d
+                    .faChar("\uf04b")
+                    .render()
+                ;
+            } else {
+                context._playing = true;
+                context.play();
+                d
+                    .faChar("\uf04c")
+                    .render()
+                ;
+            }
+        };
+
+        this._icon1.click = function(d) {
+            if (context._loop === false) {
+                context._loop = true;
+                console.log ("Loop enabled");
+            } else {
+                context._loop = false;
+                console.log ("Loop disabled");
+            }
+        };
 
         this.brush = d3.svg.brush()
             .x(this.xScale)
@@ -227,34 +256,6 @@
             ;
         }
 
-        this._icon.click = function(d) {
-            d3.event.stopPropagation();
-            if (context._playing) {
-                context._playing = false;
-                context.stop();
-                d
-                    .faChar("\uf04b")
-                    .render()
-                ;
-            } else {
-                context._playing = true;
-                context.play();
-                d
-                    .faChar("\uf04c")
-                    .render()
-                ;
-            }
-        };
-
-        this._icon1.click = function(d) {
-            if (context._loop == false) {
-                context._loop = true;
-                console.log ("Loop enabled");
-            } else {
-                context._loop = false;
-                console.log ("Loop disabled");
-            }
-        };
 
         this.axisElement
             .call(this.axis)
