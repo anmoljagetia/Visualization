@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2015 by anmoljagetia (http://jsbin.com/wusoz/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+	<title>Trial 2</title>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<style id="jsbin-css">
+	/* imports */
+		@import url(http://fonts.googleapis.com/css?family=Lato:400);
+
+		/* resets */
+		*,
+		*:before,
+		*:after {
+		  box-sizing: border-box;
+		}
+		.clearfix:after {
+			content: "";
+		  display: table;
+		  clear: both;
+		}
+
+		/* global */
+		body {
+		  color: rgb(255,255,255);
+		  font-family: "Lato", sans-serif;
+		  font-size: 14px;
+		  line-height: 1.3;
+		  margin: 10px;
+		}
+		.wrapper {
+		  margin: 0 auto;
+		  padding: 20px;
+		  max-width: 85%;
+		  background-color: #fff;
+		}
+		h1 {
+		  color: rgb(100,100,100);
+		  font-family: "Lato", cursive;
+		  font-size: 2em;
+		  margin-bottom: 10px;
+		  text-align: center;
+		}
+		h2 {
+		  color: rgb(255,255,255);
+		  font-weight: 900;
+		  font-size: 3em;
+		  margin-left: 15px;
+		  margin-top: 10px;
+		  margin-bottom: 15px;
+		}
+
+		/* grid */
+		[class*="row-"] {
+		  margin-bottom: 20px;
+		}
+		[class*="row-"]:last-child {
+		  margin-bottom: 0;
+		}
+		[class*="col-"] {
+		}
+
+		div.bgIcon {
+			position:relative;
+		}
+		div.bgIcon:before {
+			position:absolute;
+			font-family: FontAwesome;
+			font-size: 70px;
+			color: rgba(255,255,255, 0.4);
+			top: 10px;
+			right:10%;
+			margin-right: 5px;
+		}
+
+		#one {
+     	  background-color: #3498db;
+     	  content: "\f100";
+		}
+
+		#one.bgIcon:before {
+			content: "\f0f2";
+		}
+
+
+		#two {
+			background-color: #2ecc71;
+		}
+
+		#two.bgIcon:before {
+			content: "\f012";
+		}
+
+		#three {
+			background-color: #e74c3c;
+		}
+
+		#three.bgIcon:before {
+			content: "\f007";
+		}
+
+		#four {
+			background-color: #e67e22;
+		}
+
+		#four.bgIcon:before {
+			content: "\f200";
+		}
+
+		#one div, #two div, #three div, #four div {
+			padding-left: 10px;
+			padding-bottom: 20px;
+			font-size: 1.1em;
+			color: rgba(255,255,255, 0.8);
+		}
+
+
+		@media all and ( min-width: 768px ) {
+
+		  /* all cols margin */
+		  [class*="col-"] {
+		    margin-right: 20px;
+		  }
+		  [class*="col-"]:last-child {
+		    margin-right: 0;
+		  }
+
+		  /* make the columns responsive */
+		  .col-1-4 {
+		    float: left;
+		    width: 25%;
+		  }
+
+		  /* 4 span rows */
+		  .row-4 {
+		    padding-left: 60px;
+		  }
+		  .row-4 [class*="col-"]:first-child {
+		    margin-left: -60px;
+		  }
+
+		}
+
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Widget Trials</h1>
+    <div class="row-4 clearfix">
+      <div id="one" class="col-1-4 bgIcon">
+        <h2>150</h2>
+        <div>
+        	New Orders
+        </div>
+        <div style="background-color:#2980b9;padding-bottom: 10px;padding-top: 10px;"  onclick="foo(this)">More Info
+        	<i class="fa fa-chevron-circle-down" style="padding-left: 2%"></i>
+        </div>
+      </div>
+
+      <div id="two" class="col-1-4 bgIcon">
+        <h2>53 %</h2>
+        <div>
+        	Bounce Rates
+        </div>
+        <div style="background-color:#27ae60;padding-bottom: 10px;padding-top: 10px;"  onclick="foo(this)">More Info
+        	<!-- <i class="fa fa-angle-down"></i> -->
+        	<i class="fa fa-chevron-circle-down" style="padding-left: 2%"></i>
+        </div>
+      </div>
+
+      <div  id="three" class="col-1-4 bgIcon">
+        <h2>44</h2>
+        <div>
+        	New Registrations
+        </div>
+        <div style="background-color:#c0392b;padding-bottom: 10px;padding-top: 10px;"  onclick="foo(this)">More Info
+        	<i class="fa fa-chevron-circle-down" style="padding-left: 2%"></i>
+        </div>
+      </div>
+
+      <div  id="four" class="col-1-4 bgIcon">
+        <h2>65</h2>
+        <div>
+        	Unique Visitors
+        </div>
+        <div style="background-color:#d35400;padding-bottom: 10px;padding-top: 10px;" onclick="foo(this)"> More Info
+        	<i class="fa fa-chevron-circle-down" style="padding-left: 2%"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+<script id="jsbin-javascript">
+  function foo(e) {
+		e.innerText = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  }
+</script>
+</body>
+</html>
