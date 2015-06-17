@@ -591,10 +591,20 @@
         elements
             .each(function (context) {
                 context.update(this, context._element);
-                if (context._drawStartPos === "origin" && context._target instanceof SVGElement) {
-                    context._element.attr("transform", function (d) { return "translate(" + (context._pos.x - context._size.width / 2) + "," + (context._pos.y - context._size.height / 2) + ")scale(" + context._scale + ")"; });
+                if (context._target instanceof SVGElement) {
+                    if (context._drawStartPos === "origin") {
+                        context._element.attr("transform", function (d) { return "translate(" + (context._pos.x - context._size.width / 2) + "," + (context._pos.y - context._size.height / 2) + ")scale(" + context._scale + ")"; });
+                    } else {
+                        context._element.attr("transform", function (d) { return "translate(" + context._pos.x + "," + context._pos.y + ")scale(" + context._scale + ")"; });
+                    }
                 } else {
-                    context._element.attr("transform", function (d) { return "translate(" + context._pos.x + "," + context._pos.y + ")scale(" + context._scale + ")"; });
+                    if (context._drawStartPos === "origin") {
+                    } else {
+                        context._element.style({
+                            "margin-left": context._pos.x + "px",
+                            "margin-top": context._pos.y + "px"
+                        });
+                    }
                 }
             })
         ;

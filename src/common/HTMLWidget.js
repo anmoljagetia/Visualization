@@ -8,6 +8,8 @@
 }(this, function (d3, Widget, Transition) {
     function HTMLWidget() {
         Widget.call(this);
+
+        this._drawStartPos = "origin";
     }
     HTMLWidget.prototype = Object.create(Widget.prototype);
 
@@ -55,6 +57,22 @@
             .style("width", this._size.width + "px")
             .style("height", this._size.height + "px")
         ;
+        switch (this._drawStartPos) {
+            case "origin":
+                this.pos({
+                    x: 0,
+                    y: 0
+                });
+                break;
+            case "center":
+                /* falls through */
+            default:
+                this.pos({
+                    x: this._size.width / 2,
+                    y: this._size.height / 2
+                });
+                break;
+        }
         return retVal;
     };
 
