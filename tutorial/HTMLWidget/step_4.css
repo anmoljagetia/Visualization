@@ -1,0 +1,105 @@
+/* imports */
+@import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css);
+@import url(http://fonts.googleapis.com/css?family=Lato:400);
+
+/* resets */
+/* global */
+.tutorial_HTMLWidget_Step4 body {
+    color: rgb(255,255,255);
+    font-family: "Lato", sans-serif;
+    font-size: 14px;
+    line-height: 1.3;
+    margin: 10px;
+}
+
+.tutorial_HTMLWidget_Step4 .wrapper {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 85%;
+    background-color: #fff;
+}
+
+.tutorial_HTMLWidget_Step4 h1 {
+    color: rgb(100,100,100);
+    font-family: "Lato", cursive;
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.tutorial_HTMLWidget_Step4 h2 {
+    color: rgb(255,255,255);
+    font-weight: 900;
+    font-size: 3em;
+    margin-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+/* grid */
+.tutorial_HTMLWidget_Step4 [class*="row-"] {
+    margin-bottom: 20px;
+}
+
+.tutorial_HTMLWidget_Step4 [class*="row-"]:last-child {
+    margin-bottom: 0;
+}
+
+.tutorial_HTMLWidget_Step4 [class*="col-"] {
+}
+
+.tutorial_HTMLWidget_Step4 div.bgIcon {
+    position: relative;
+}
+
+.tutorial_HTMLWidget_Step4 div.bgIcon:before {
+    position: absolute;
+    font-family: FontAwesome;
+    font-size: 70px;
+    color: rgba(255,255,255, 0.4);
+    top: 10px;
+    right: 10%;
+    margin-right: 5px;
+}
+
+.tutorial_HTMLWidget_Step4 .one {
+    background-color: #000;
+    content: "\f100";
+}
+
+.tutorial_HTMLWidget_Step4 .one.bgIcon:before {
+    //content: "\f0f2";
+}
+
+.tutorial_HTMLWidget_Step4 .one div {
+    padding-left: 10px;
+    padding-bottom: 20px;
+    font-size: 1.1em;
+    color: rgba(255,255,255, 0.8);
+}
+
+@media all and ( min-width: 768px ) {
+    /* all cols margin */
+    [class*="col-"] {
+        margin-right: 20px;
+    }
+
+    [class*="col-"]:last-child {
+        margin-right: 0;
+    }
+
+    /* make the columns responsive */
+    .col-1-4 {
+        float: left;
+        width: 240px;
+    }
+
+    /* 4 span rows */
+    .row-4 {
+        padding-left: 60px;
+    }
+
+    .row-4 [class*="col-"]:first-child {
+        margin-left: -60px;
+    }
+}
