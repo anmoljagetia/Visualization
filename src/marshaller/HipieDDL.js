@@ -422,7 +422,7 @@
         this.label = visualization.label;
         this.title = visualization.title || visualization.id;
         this.type = visualization.type;
-        this.properties = visualization.properties || visualization.source.properties || {};
+        this.properties = visualization.properties || visualization.source ? visualization.source.properties : {} || {};
         this.source = new Source(this, visualization.source);
         this.events = new Events(this, visualization.events);
 
