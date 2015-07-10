@@ -75,7 +75,7 @@
             .data([
                 ["Geography", 75, 68, 65],
                 ["English", 45, 55, 52],
-                ["Math", 98, 92, 90],
+                ["Math", 90, 92, 98],
                 ["Science", 66, null, 56]
             ])
         ;
