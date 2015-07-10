@@ -26,7 +26,7 @@
     XYAxis.prototype.publish("xAxisDomainHigh", "", "string", "X-Axis High");
 
     XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
-    XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time"]);
+    XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time", "timeRange"]);
     XYAxis.prototype.publish("yAxisTypeTimePattern", "%Y-%m-%d", "string", "Time Series Pattern");
     XYAxis.prototype.publish("yAxisTypePowExponent", 2, "number", "Exponent for Pow on Value Axis");
     XYAxis.prototype.publish("yAxisTypeLogBase", 10, "number", "Base for log on Value Axis");
@@ -35,7 +35,7 @@
 
     XYAxis.prototype.publish("regions", [], "array", "Regions");
 
-    XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y"]);
+    XYAxis.prototype.publish("sampleData", "", "set", "Display Sample Data", ["", "ordinal", "ordinalRange", "linear", "time-x", "time-y", "time-y-range"]);
 
     XYAxis.prototype._sampleData = XYAxis.prototype.sampleData;
     XYAxis.prototype.sampleData = function (_) {
@@ -57,6 +57,9 @@
                 case "time-y":
                     this.testDataTimeY();
                     break;
+                case "time-y-range":
+                    this.testDataTimeYRange();
+                    break;
             }
         }
         return retVal;
@@ -69,7 +72,7 @@
 
     //  Data ---
     XYAxis.prototype.testData = function () {
-        this.sampleData("time-y");
+        this.sampleData("time-y-range");
         return this;
     };
 
@@ -160,6 +163,21 @@
                 ["English", "2010-07-12"],
                 ["Math", "2010-07-15"],
                 ["Science", "2010-07-21"]
+            ])
+        ;
+    };
+
+    XYAxis.prototype.testDataTimeYRange = function () {
+        return this
+            .xAxisType("ordinal")
+            .yAxisType("time")
+            .yAxisTypeTimePattern("%Y-%m-%d")
+            .columns(["Subject", "Start1 - End1", "Start2 - End2"])
+            .data([
+                ["Geography", ["2010-07-09", "2010-07-11"], ["2010-07-08", "2010-07-13"]],
+                ["English", ["2010-07-10", "2010-07-14"], ["2010-07-19", "2010-07-21"]],
+                ["Math", ["2010-07-12", "2010-07-21"], ["2010-07-09", "2010-07-12"]],
+                ["Science", ["2010-07-18", "2010-07-24"], ["2010-07-17", "2010-07-21"]]
             ])
         ;
     };
@@ -468,6 +486,8 @@
         });
         switch (this.yAxisType()) {
             case "time":
+                break;
+            case "time-y-range" :
                 break;
             default:
                 var valuePadding = (max - min) * this.valueAxisPadding() / 100;
