@@ -27,7 +27,7 @@
     XYAxis.prototype.publish("xAxisDomainHigh", "", "string", "X-Axis High");
 
     XYAxis.prototype.publish("yAxisTitle", "", "string", "Y-Axis Title");
-    XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear"]);
+    XYAxis.prototype.publish("yAxisType", "linear", "set", "Y-Axis Type", ["none", "linear", "pow", "log", "time"]);
     XYAxis.prototype.publish("yAxisTypePowExponent", 2, "number", "Exponent for Pow on Value Axis");
     XYAxis.prototype.publish("yAxisTypeLogBase", 10, "number", "Base for log on Value Axis");
     XYAxis.prototype.publish("yAxisDomainLow", "", "string", "Y-Axis Low");
@@ -41,7 +41,8 @@
         if (arguments.length) {
             switch (_) {
                 case "ordinal":
-                    this.testDataOrdinal();
+                    // this.testDataOrdinal();
+                    this.testDataForYAxisTimeScale();
                     break;
                 case "ordinalRange":
                     this.testDataOrdinalRange();
@@ -133,6 +134,17 @@
                 }
             }))
         ;
+    };
+
+    XYAxis.prototype.testDataForYAxisTimeScale = function () {
+        return this
+            .columns(["Subject", "Year 1"]);
+            this.data([
+                ["Geography", "2010-07-09"]
+                ["English", "2010-07-12"]
+                ["Math", "2010-07-15"]
+                ["Science", "2010-07-21"]
+            ]);
     };
 
     var timeseriesPattern = XYAxis.prototype.timeseriesPattern;
@@ -374,6 +386,9 @@
                     .base(this.yAxisTypeLogBase())
                 ;
                 break;
+            case "time":
+                this.valueScale = d3.time.scale();
+                break;
             case "linear":
                 /* falls through */
             default:
@@ -417,19 +432,29 @@
                 this.dataScale.domain(this.data().map(function (d) { return d[0]; }));
                 break;
         }
-        var min = d3.min(this.formattedData(), function (data) {
-            return d3.min(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? +d[0] : +d; });
-        });
-        var max = d3.max(this.formattedData(), function (data) {
-            return d3.max(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? +d[1] : +d; });
-        });
-        var valuePadding = (max - min) * this.valueAxisPadding() / 100;
-        var newMin = min - valuePadding;
-        if (min >= 0 && newMin < 0 || min === max)
-            newMin = 0;
-        var newMax = max + valuePadding;
-        this.valueScale.domain([newMin, newMax]);
 
+        if (this.yAxisType() === "time") {
+            var dateMin = this.yAxisDomainLow() ? this.formatData(this.yAxisDomainLow()) : d3.min(this.formattedData(), function (data) {
+                return data[0];
+            });
+            var dateMax = this.yAxisDomainHigh() ? this.formatData(this.yAxisDomainHigh()) : d3.max(this.formattedData(), function (data) {
+                return data[0];
+            });
+            this.dataScale.domain([dateMin, dateMax]);
+        } else {
+            var min = d3.min(this.formattedData(), function (data) {
+                return d3.min(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? +d[0] : +d; });
+            });
+            var max = d3.max(this.formattedData(), function (data) {
+                return d3.max(data.filter(function (cell, i) { return i > 0 && context._columns[i] && context._columns[i].indexOf("__") !== 0 && cell !== null; }), function (d) { return d instanceof Array ? +d[1] : +d; });
+            });
+            var valuePadding = (max - min) * this.valueAxisPadding() / 100;
+            var newMin = min - valuePadding;
+            if (min >= 0 && newMin < 0 || min === max)
+                newMin = 0;
+            var newMax = max + valuePadding;
+            this.valueScale.domain([newMin, newMax]);
+        }
         //  Calculate Range  ---
         if (this.dataScale.rangeRoundBands) {
             this.dataScale.rangeRoundBands([isHorizontal ? 0 : this.height(), isHorizontal ? this.width() : 0], 0.1);
