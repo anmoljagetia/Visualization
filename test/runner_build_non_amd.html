@@ -31,17 +31,17 @@
     <script src="../bower_components/d3-cloud/d3.layout.cloud.js"></script>
 
     <script src="../dist/hpcc-viz-common.js"></script>
-    <script src="../dist/hpcc-viz-api.min.js"></script>
-    <script src="../dist/hpcc-viz-other.min.js"></script>
-    <script src="../dist/hpcc-viz-tree.min.js"></script>
-    <script src="../dist/hpcc-viz-chart.min.js"></script>
-    <script src="../dist/hpcc-viz-graph.min.js"></script>
-    <script src="../dist/hpcc-viz-c3chart.min.js"></script>
-    <script src="../dist/hpcc-viz-amchart.min.js"></script>
-    <script src="../dist/hpcc-viz-google.min.js"></script>
-    <script src="../dist/hpcc-viz-map.min.js"></script>
-    <script src="../dist/hpcc-viz-layout.min.js"></script>
-    <script src="../dist/hpcc-viz-marshaller.min.js"></script>
+<!--     // <script src="../dist/hpcc-viz-api.min.js"></script>
+    // <script src="../dist/hpcc-viz-other.min.js"></script>
+    // <script src="../dist/hpcc-viz-tree.min.js"></script>
+    // <script src="../dist/hpcc-viz-chart.min.js"></script>
+    // <script src="../dist/hpcc-viz-graph.min.js"></script>
+    // <script src="../dist/hpcc-viz-c3chart.min.js"></script>
+    // <script src="../dist/hpcc-viz-amchart.min.js"></script>
+    // <script src="../dist/hpcc-viz-google.min.js"></script>
+    // <script src="../dist/hpcc-viz-map.min.js"></script>
+    // <script src="../dist/hpcc-viz-layout.min.js"></script>
+    // <script src="../dist/hpcc-viz-marshaller.min.js"></script> -->
 
     <script src="../node_modules/mocha/mocha.js"></script>
     <script src="../node_modules/chai/chai.js"></script>
@@ -131,13 +131,12 @@
             var pathFileName = pathParts[2];
             var pathClassID = pathParts[1] + "_" + pathParts[2];
 
-            new common_Shape()
+            var Widget = new common_Icon()
                 .shape("circle")
+                .faChar("\uf080")
                 .target("shape")
-                .size({ width: 32, height: 32 })
                 .render()
             ;
-
             // it("require load", function (done) {
             //     require([path], function (Widget) {
             //         done();
@@ -147,6 +146,7 @@
             it("features", function (done) {
                 var pathParts = path.split("/");
                 var className = pathParts[1] + "_" + pathParts[2];
+                // var Widget = new Icon();
                 assert.isFunction(Widget);
                 assert.isFunction(Widget.prototype.constructor, "constructor");
                 assert.isFunction(Widget.prototype.testData, "has testData");
