@@ -13,8 +13,8 @@
     Most scripts are optional, include only what you need
     @TODO: shoud document dependencies in README
     -->
-    <script src="https://www.google.com/jsapi"></script>
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <!--  <script src="https://www.google.com/jsapi"></script> -->
+    <!--<script src="https://maps.googleapis.com/maps/api/js"></script> -->
     <script src="../bower_components/d3/d3.js"></script>
     <script src="../bower_components/c3/c3.js"></script>
     <script src="../bower_components/amcharts/dist/amcharts/amcharts.js"></script>
@@ -35,39 +35,47 @@
     <script src="../dist/hpcc-viz-other.min.js"></script>
     <script src="../dist/hpcc-viz-tree.min.js"></script>
     <script src="../dist/hpcc-viz-chart.min.js"></script>
-<!--    <script src="../dist/hpcc-viz-graph.min.js"></script>
+    <script src="../dist/hpcc-viz-graph.min.js"></script>
     <script src="../dist/hpcc-viz-c3chart.min.js"></script>
     <script src="../dist/hpcc-viz-amchart.min.js"></script>
     <script src="../dist/hpcc-viz-google.min.js"></script>
     <script src="../dist/hpcc-viz-map.min.js"></script>
     <script src="../dist/hpcc-viz-layout.min.js"></script>
-    <script src="../dist/hpcc-viz-marshaller.min.js"></script>-->
+    <script src="../dist/hpcc-viz-marshaller.min.js"></script>
+
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+
+    <script src="../bower_components/requirejs/require.js"></script>
+    <!-- // <script src="../src/config.js"></script> -->
 
     <script>
-    this.timeout(5000);
+    mocha.setup('bdd');
+    var assert = chai.assert;
+
     var allWidgets = [
-        { path: "src/common/FAChar" },
-        { path: "src/common/Icon" },
-        { path: "src/common/List" },
-        { path: "src/common/Menu" },
-        { path: "src/common/ResizeSurface" },
+        // { path: "src/common/FAChar" },
+        // { path: "src/common/Icon" },
+        // { path: "src/common/List" },
+        // { path: "src/common/Menu" },
+        // { path: "src/common/ResizeSurface" },
         { path: "src/common/Shape" },
-        { path: "src/common/Surface" },
-        { path: "src/common/Text" },
-        { path: "src/common/TextBox" },
-        { path: "src/chart/Area" },
-        { path: "src/chart/Bubble" },
-        { path: "src/chart/Column" },
-        { path: "src/chart/Line" },
-        { path: "src/chart/MultiChart" },
-        { path: "src/chart/MultiChartSurface" },
-        { path: "src/chart/Pie" },
-        { path: "src/chart/Scatter" },
-        { path: "src/chart/Step" },
-        { path: "src/chart/Summary" },
-        { path: "src/form/Form" },
-        { path: "src/form/Input" },
-        { path: "src/form/Slider" },
+        // { path: "src/common/Surface" },
+        // { path: "src/common/Text" },
+        // { path: "src/common/TextBox" },
+        // { path: "src/chart/Area" },
+        // { path: "src/chart/Bubble" },
+        // { path: "src/chart/Column" },
+        // { path: "src/chart/Line" },
+        // { path: "src/chart/MultiChart" },
+        // { path: "src/chart/MultiChartSurface" },
+        // { path: "src/chart/Pie" },
+        // { path: "src/chart/Scatter" },
+        // { path: "src/chart/Step" },
+        // { path: "src/chart/Summary" },
+        // { path: "src/form/Form" },
+        // { path: "src/form/Input" },
+        // { path: "src/form/Slider" },
         // { path: "src/map/ChoroplethCounties" },
         // { path: "src/map/ChoroplethCountries" },
         // { path: "src/map/ChoroplethStates" },
@@ -119,81 +127,87 @@
     ];
     allWidgets.forEach(function (widget) {
         var path = widget.path;
-        describe(path, function () {
             var pathParts = path.split("/");
             var pathFileName = pathParts[2];
             var pathClassID = pathParts[1] + "_" + pathParts[2];
 
-            it("require load", function (done) {
-                require([path], function (Widget) {
-                    done();
-                });
-            });
+            new common_Shape()
+                .shape("circle")
+                .target("shape")
+                .size({ width: 32, height: 32 })
+                .render()
+            ;
+
+            // it("require load", function (done) {
+            //     require([path], function (Widget) {
+            //         done();
+            //     });
+            // });
 
             it("features", function (done) {
                 var pathParts = path.split("/");
                 var className = pathParts[1] + "_" + pathParts[2];
-                require([path], function (Widget) {
-                    assert.isFunction(Widget);
-                    assert.isFunction(Widget.prototype.constructor, "constructor");
-                    assert.isFunction(Widget.prototype.testData, "has testData");
-                    assert.include(Widget.prototype._class, className, "Correct Class Name");
-                    done();
-                });
+                assert.isFunction(Widget);
+                assert.isFunction(Widget.prototype.constructor, "constructor");
+                assert.isFunction(Widget.prototype.testData, "has testData");
+                assert.include(Widget.prototype._class, className, "Correct Class Name");
+                done();
+
+                mocha.run();
+
             });
 
-            if (!window.skipHierarchTest) {
-                it("Class Hierarchy", function (done) {
-                    require(["src/common/Widget", path], function (Widget, TestWidget) {
-                        var proto = TestWidget.prototype;
-                        while (proto) {
-                            var className = getClassName(proto);
-                            var constructorName = getContructorName(proto);
-                            assert.equal(className, constructorName);
-                            if (className === "Widget") {
-                                break;
-                            }
-                            proto = proto.__proto__;
-                        }
-                        done();
-                    });
-                });
-            }
+            // if (!window.skipHierarchTest) {
+            //     it("Class Hierarchy", function (done) {
+            //         require(["src/common/Widget", path], function (Widget, TestWidget) {
+            //             var proto = TestWidget.prototype;
+            //             while (proto) {
+            //                 var className = getClassName(proto);
+            //                 var constructorName = getContructorName(proto);
+            //                 assert.equal(className, constructorName);
+            //                 if (className === "Widget") {
+            //                     break;
+            //                 }
+            //                 proto = proto.__proto__;
+            //             }
+            //             done();
+            //         });
+            //     });
+            // }
 
-            it("Clone Palette", function (done) {
-                require([path], function (Widget) {
-                    if (typeof(Widget.prototype.paletteID) === "function") {
-                        assert.isFunction(Widget.prototype.useClonedPalette, 'has useClonedPalette');
-                    }
-                    done();
-                });
-            });
+            // it("Clone Palette", function (done) {
+            //     require([path], function (Widget) {
+            //         if (typeof(Widget.prototype.paletteID) === "function") {
+            //             assert.isFunction(Widget.prototype.useClonedPalette, 'has useClonedPalette');
+            //         }
+            //         done();
+            //     });
+            // });
 
-            it("Adding widget to the page", function (done) {
-                this.timeout(5000);
-                setTimeout(function () {
-                    var element = d3.select("#testWidget");
-                    var testDiv = element.append("div")
-                        .attr("class", "widgetTest")
-                    ;
-                    var widgetDiv = testDiv.append("div")
-                        .attr("class", "widget")
-                    ;
-                    testDiv.append("center")
-                        .attr("class", "title")
-                        .text(path)
-                    ;
-                    require([path], function (Widget) {
-                        var vizWidget = new Widget()
-                            .target(widgetDiv.node())
-                            .testData()
-                            .render()
-                        ;
-                        done();
-                    });
-                }, 0);
-            });
-        });
+            // it("Adding widget to the page", function (done) {
+            //     this.timeout(5000);
+            //     setTimeout(function () {
+            //         var element = d3.select("#testWidget");
+            //         var testDiv = element.append("div")
+            //             .attr("class", "widgetTest")
+            //         ;
+            //         var widgetDiv = testDiv.append("div")
+            //             .attr("class", "widget")
+            //         ;
+            //         testDiv.append("center")
+            //             .attr("class", "title")
+            //             .text(path)
+            //         ;
+            //         require([path], function (Widget) {
+            //             var vizWidget = new Widget()
+            //                 .target(widgetDiv.node())
+            //                 .testData()
+            //                 .render()
+            //             ;
+            //             done();
+            //         });
+            //     }, 0);
+            // });
     });
 
     function getContructorName(__prototype) {
@@ -210,6 +224,7 @@
     </script>
 </head>
 <body>
-
+    <div id="mocha"></div>
+    <div id="shape" class="small thumb"></div>
 </body>
 </html>
